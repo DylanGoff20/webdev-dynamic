@@ -14,6 +14,15 @@ const template = path.join(__dirname, 'templates');
 let app = express();
 app.use(express.static(root));
 
+const db = new sqlite3.Database('./KMDW.sqlite3', sqlite3.OPEN_READONLY, (err) => {
+    if(err){
+        console.log('Error connecting to database');
+    }
+    else{
+        console.log('Successfully connected to database');
+    }
+});
+
 app.listen(port, () => {
     console.log('Now listening on port ' + port);
 });
