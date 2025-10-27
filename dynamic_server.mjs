@@ -23,6 +23,10 @@ const db = new sqlite3.Database('./KMDW.sqlite3', sqlite3.OPEN_READONLY, (err) =
     }
 });
 
+//TODO Create HTML for home page - Jack
+//TODO Create HTML for record temp - Jack
+//TODO Create HTML for avg temp - Dylan
+//TODO Create HTML for precitpitation - Mark
 app.listen(port, () => {
     console.log('Now listening on port ' + port);
 });
