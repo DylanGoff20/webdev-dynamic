@@ -9,7 +9,9 @@
     "contributors": [
         "Dylan Goff, Jack Johnson, Mark Desutter"
     ],
-    "repository": {},
+    "repository": {
+        "url": "https://github.com/DylanGoff20/webdev-dynamic"
+    },
     "dependencies": {
         "express": "^5.1.0",
         "sqlite3": "^5.1.7"
