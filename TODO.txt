@@ -1,0 +1,14 @@
+Jack - 10/27 4:25pm:
+    I made this to log what we do and what I did with the html. So I noticed the data
+    appears to be a dataset for the daily weather reportings for the city of Chicago, 
+    so I named the site and headings accordingly. I also did all of the html because once
+    I got the index done, it took about a minute to get the other pages up, and then also
+    you guys don't have to try and fiddle with the foundation stuff because I don't even
+    fully get it myself, but just now we have a consistent style. So in terms of what to do
+    next, you can see that line 30 on the 3 html pages is the place where we would do the 
+    string replacement to print out all of the data. I was thinking print the date with
+    actual_mean_temp, actual_min_temp, and actual_max_temp for temperature. The date with
+    average_min_temp, average_max_temp, record_min_temp, record_max_temp, record_min_temp_year,
+    and record_max_temp_year for record. And the date with actual_precipitation, 
+    average_precipitation, and record_precipitation for precipitation. So yeah if someone
+    feels like doing that they can, if not we have the html done for Wednesday after class.
