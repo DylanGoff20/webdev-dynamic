@@ -12,3 +12,7 @@ Jack - 10/27 4:25pm:
     and record_max_temp_year for record. And the date with actual_precipitation, 
     average_precipitation, and record_precipitation for precipitation. So yeah if someone
     feels like doing that they can, if not we have the html done for Wednesday after class.
+
+Mark - 10/28 1:00 PM
+    there are some issues in the HTML file that I will fix with the css and tables, I implemented one of the dynamic tables for temperature
+    and will do the rest of the tables

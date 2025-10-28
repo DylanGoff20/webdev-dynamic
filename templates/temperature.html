@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Weather of Chicago</title>
-	<link rel="stylesheet" href="../public/css/foundation.css">
-    <link rel="stylesheet" href="../public/css/style.css">
+	<link rel="stylesheet" href="/css/foundation.css">
+    <!--<link rel="stylesheet" href="/css/style.css">-->
 </head>
 <body>
 	<div class="off-canvas-wrapper">
@@ -21,7 +21,19 @@
 		<div class="grid-container" id="content">
 			<div class="grid-x grid-padding-x">
                 <header class="float-center">
-                    Temperature of Chicago
+                    <table>
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Average Temp</th>
+								<th>Average Min Temp</th>
+								<th>Average Max Temp</th>
+							</tr>
+						</thead>
+						<tbody>
+							$$$TEMPERATURE_ROWS$$$
+						</tbody>
+					</table>
                 </header>
             </div>
 			<br/>
