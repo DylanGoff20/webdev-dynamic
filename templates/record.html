@@ -4,14 +4,14 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Weather of Chicago</title>
-	<link rel="stylesheet" href="../public/css/foundation.css">
-    <link rel="stylesheet" href="../public/css/style.css">
+	<link rel="stylesheet" href="/css/foundation.css">
+    <!--<link rel="stylesheet" href="/css/style.css">-->
 </head>
 <body>
 	<div class="off-canvas-wrapper">
 		<div class="off-canvas-content" data-off-canvas-content>
 			<div class="top-bar" id="topbar">
-            	<a href="index.html">Home</a>
+            	<a href="/">Home</a>
 				<a href="temperature.html">Temperatures by Day</a>
 				<a href="record.html">Record Temperatures by Day</a>
 				<a href="precipitation.html">Precipitation by Day</a>
@@ -21,7 +21,18 @@
 		<div class="grid-container" id="content">
 			<div class="grid-x grid-padding-x">
                 <header class="float-center">
-                    Record Temperature of Chicago
+                    <table>
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Record Min Temp</th>
+								<th>Record Max Temp</th>
+							</tr>
+						</thead>
+						<tbody>
+							$$$RECORD_ROWS$$$
+						</tbody>
+					</table>
                 </header>
             </div>
 			<br/>
