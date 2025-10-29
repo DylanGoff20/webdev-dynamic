@@ -34,8 +34,8 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/temperature.html', (req, res) => {
-    db.all('SELECT date, actual_mean_temp, actual_min_temp, actual_max_temp FROM KMDW', (err, rows) => {
+app.get('/day.html: date', (req, res) => {
+    db.all('SELECT * FROM KMDW WHERE date == ?', [req.params.date], (err, rows) => {
         if(err){
             res.status(500).type('txt').send('SQL Error');
         }
@@ -49,47 +49,6 @@ app.get('/temperature.html', (req, res) => {
                     tr_string += '<td>' + rows[i].actual_max_temp + '</td></tr>';
                 }
                 let response = data.replace('$$$TEMPERATURE_ROWS$$$', tr_string);
-                res.status(200).type('html').send(response);
-            });
-        }
-    });
-});
-
-app.get('/record.html', (req, res) => {
-    db.all('SELECT date, record_min_temp, record_max_temp FROM KMDW', (err, rows) => {
-        if(err){
-            res.status(500).type('txt').send('SQL Error');
-        }
-        else{
-            fs.readFile(path.join(template, 'record.html'), {encoding: 'utf8'}, (err, data) => {
-                let tr_string = '';
-                for(let i = 0; i < rows.length; i++){
-                    tr_string += '<tr><td>' + rows[i].date + '</td>';
-                    tr_string += '<td>' + rows[i].record_min_temp + '</td>';
-                    tr_string += '<td>' + rows[i].record_max_temp + '</td></tr>';
-                }
-                let response = data.replace('$$$RECORD_ROWS$$$', tr_string);
-                res.status(200).type('html').send(response);
-            });
-        }
-    });
-});
-
-app.get('/precipitation.html', (req, res) => {
-    db.all('SELECT date, actual_precipitation, average_precipitation, record_precipitation FROM KMDW', (err, rows) => {
-        if(err){
-            res.status(500).type('txt').send('SQL Error');
-        }
-        else{
-            fs.readFile(path.join(template, 'precipitation.html'), {encoding: 'utf8'}, (err, data) => {
-                let tr_string = '';
-                for(let i = 0; i < rows.length; i++){
-                    tr_string += '<tr><td>' + rows[i].date + '</td>';
-                    tr_string += '<td>' + rows[i].actual_precipitation + '</td>';
-                    tr_string += '<td>' + rows[i].average_precipitation + '</td>';
-                    tr_string += '<td>' + rows[i].record_precipitation + '</td></tr>';
-                }
-                let response = data.replace('$$$PRECIPITATION_ROWS$$$', tr_string);
                 res.status(200).type('html').send(response);
             });
         }
