@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/day.html: date', (req, res) => {
+app.get('/day.html/:date', (req, res) => {
     db.all('SELECT * FROM KMDW WHERE date == ?', [req.params.date], (err, rows) => {
         if(err){
             res.status(500).type('txt').send('SQL Error');
