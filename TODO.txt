@@ -16,3 +16,6 @@ Jack - 10/27 4:25pm:
 Mark - 10/28 1:00 PM
     there are some issues in the HTML file that I will fix with the css and tables, I implemented one of the dynamic tables for temperature
     and will do the rest of the tables
+
+Dylan - 
+    Will add images and graphs to each page, work on previous and next buttons
