@@ -30,3 +30,11 @@ Dylan -
 
 
 >>>>>>> 6fe9dd0 (stop)
+
+Jack - 4:40PM:
+    I did the html and css so now the only things we should have to do are, dynamically
+    generate each url and fill in the header and data for the dynamically generated url, 
+    fill in the href for the prev and next links, make at least one graph for at least 
+    one of the three html files, and dynamically change the picture on the season page 
+    for a picture of one of the 4 seasons. Also we have to send a propor 404 error when
+    trying to access a page that doesnt exist.

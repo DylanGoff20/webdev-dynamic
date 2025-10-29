@@ -1,12 +1,18 @@
 #topbar {
+    font-size: 1rem;
+}
 
+#prevnext {
+    background-color: white;
+    font-size: .8rem;
 }
 
 #content {
     background-color:#a1bfcc;
+    font-size: 1rem;
 }
 
-header {
+#Theheader {
     font-size: 3rem;
 }
 

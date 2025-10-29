@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/css/foundation.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body id="No-Scrolling">
+<body>
 	<div class="off-canvas-wrapper">
 		<div class="off-canvas-content" data-off-canvas-content>
 			<div class="top-bar" id="topbar">
@@ -16,25 +16,35 @@
 				<a href="month.html">By Month</a>
 				<a href="season.html">By Season</a>
         	</div>
+			<div class="top-bar" id="prevnext">
+				<!--fill in the href here for the prev and next links-->
+            	<a href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prev</a>
+				<a href="">next&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        	</div>
 		</div>
 
 		<div class="grid-container" id="content">
 			<div class="grid-x grid-padding-x">
                 <header class="float-center" id = "Theheader">
-                    Weather of Chicago
+                    <!--insert season here and probably the dates of that season, ie "Winter 12/1/14-3/1/15"-->
                 </header>
             </div>
 			<br/>
 			<br/>
+			<!--fill in the source for the corresponding season picture, also the alt since the directions say to do so-->
+			<img src="" alt="" width="360px" height="360px" class="float-center">
+			<br/>
+			<br/>
+            <div>
+				<!--fill in each piece of data after the colon-->
+				<p>The low for the season: </p>
+				<p>The high for the season</p>
+				<p>The average temperature for the season: </p>
+				<p>The average daily parcipitation for the season: </p>
+				<p>The total parcipitation for the season: </p>
+			</div>
 			<div>
-				<p>
-					This webpage holds the daily weather data for the city of Chicago from 
-					7/1/2014 to 6/30/2015. So, click a category at the top bar to start
-					browsing the data.
-				</p>
-				<img src="/pictures/Chicago-map.jpg" alt="the location of chicago on a map of the USA" width="700px" height="700px" class="float-center">
-				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				<!--If there is a graph to be generated, place it here-->
 			</div>
 		</div>
 	</div>
