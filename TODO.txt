@@ -19,17 +19,12 @@ Mark - 10/28 1:00 PM
 
 Dylan - 
     Will add images and graphs to each page, work on previous and next buttons
-<<<<<<< HEAD
-=======
 
 3 Paths:
     1. All weather data by day 
     2. Min Temp, Max Temp, Avg Temp, Avg precipitation, total precipitation by month
     3. Min Temp, Max Temp, Avg Temp, Avg Precipitation, total precipitation by Season
 
-
-
->>>>>>> 6fe9dd0 (stop)
 
 Jack - 4:40PM:
     I did the html and css so now the only things we should have to do are, dynamically
