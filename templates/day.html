@@ -37,6 +37,9 @@
 			</div>
 			<div>
 				<!--If there is a graph to be generated, place it here-->
+				<div class="chart-container" style="width: 80%; margin: auto;">
+					<canvas id="weatherChart"></canvas>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -44,6 +47,28 @@
 	<script src="js/vendor/jquery.js"></script>
     <script src="js/vendor/what-input.js"></script>
     <script src="js/vendor/foundation.js"></script>
+	<script>
+		const chartData = $$$CHART_DATA$$$;
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			if (typeof chartData !== 'undefined') {
+				const ctx = document.getElementById('weatherChart');
+				new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: chartData.labels,
+						datasets: [{
+							label: "Daily Weather Information",
+							data: chartData.values,
+							backgroundColor: 'skyblue'
+						}]
+					}
+				});
+			}
+		});
+		</script>
     <script type="application/javascript">
         $(document).foundation();
     </script>

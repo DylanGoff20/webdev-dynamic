@@ -74,6 +74,40 @@ app.get('/day/:date', (req, res) => {
                         }
                         response = response.replace('$$$PREV_DATE$$$', prevDate ?? '#');
                         response = response.replace('$$$NEXT_DATE$$$', nextDate ?? '#');
+                        const chartData = {
+                            labels: [
+                                'Actual Mean Temp',
+                                'Actual Low Temp',
+                                'Actual High Temp',
+                                'Average Low Temp',
+                                'Average High Temp',
+                                'Record Low Temp',
+                                'Record High Temp',
+                                'Record Low Year',
+                                'Record High Year',
+                                'Actual Precipitation',
+                                'Average Precipitation',
+                                'Record Precipitation'
+                            ],
+                            values: [
+                                row[0].actual_mean_temp,
+                                row[0].actual_min_temp,
+                                row[0].actual_max_temp,
+                                row[0].average_min_temp,
+                                row[0].average_max_temp,
+                                row[0].record_min_temp,
+                                row[0].record_max_temp,
+                                row[0].record_min_temp_year,
+                                row[0].record_max_temp_year,
+                                row[0].actual_precipitation,
+                                row[0].average_precipitation,
+                                row[0].record_precipitation
+                            ]
+                        };
+                        
+                        response = response.replace('$$$CHART_DATA$$$', JSON.stringify(chartData));
+                        
+                        
                         res.status(200).type('.html').send(response);
                     });
                 });
@@ -133,6 +167,16 @@ app.get('/month/:month', (req, res) => {
 
                 response = response.replace('$$$PREV_DATE$$$', prevLink);
                 response = response.replace('$$$NEXT_DATE$$$', nextLink);
+
+
+                const chartData = {
+                    labels: ['Low', 'High', 'Average Temp', 'Total Precipitation', 'Avg Daily Precipitation'],
+                    values: [low, high, average_temp_total / rows.length, total_parcipitation, total_parcipitation / rows.length]
+                };
+                
+                response = response.replace('$$$CHART_DATA$$$', JSON.stringify(chartData));
+                
+
                 
                 res.status(200).type('html').send(response);
             });
@@ -212,6 +256,20 @@ app.get('/season/:season', (req, res) => {
                     }
 
                     response = response.replace('$$$IMG$$$', img);
+                    
+                    const chartData = {
+                        labels: ['Low', 'High', 'Average Temp', 'Total Precipitation', 'Avg Daily Precipitation'],
+                        values: [
+                            low,
+                            high,
+                            average_temp_total / rows.length,
+                            total_parcipitation,
+                            total_parcipitation / rows.length
+                        ]
+                    };
+                    
+                    response = response.replace('$$$CHART_DATA$$$', JSON.stringify(chartData));
+                    
                     res.status(200).type('html').send(response);
                 });
             }
