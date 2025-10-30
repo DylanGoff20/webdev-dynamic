@@ -39,6 +39,9 @@ app.get('/day/:date', (req, res) => {
         if(err){
             res.status(500).type('txt').send('SQL Error');
         }
+        if(row.length === 0){
+            res.status(404).type('txt').send('Day ' + req.params.date + ' not found in database');
+        }
         else{
             fs.readFile(path.join(template, 'day.html'), {encoding: 'utf8'}, (err, data) => {
                 let string = '';
@@ -69,6 +72,9 @@ app.get('/month/:month', (req, res) => {
     db.all('SELECT * FROM KMDW WHERE date BETWEEN ? AND ?', [start_date, end_date], (err, rows) => {
         if(err){
             res.status(500).type('txt').send('SQL Error');
+        }
+        if(rows.length === 0){
+            res.status(404).type('txt').send('Month ' + req.params.month + ' not found in database');
         }
         else{
             fs.readFile(path.join(template, 'month.html'), {encoding: 'utf8'}, (err, data) => {
@@ -103,42 +109,69 @@ app.get('/month/:month', (req, res) => {
 });
 
 app.get('/season/:season', (req, res) => {
-    const [start_date, end_date] = returnSeason(req.params.season);
-    console.log(start_date + ' ' + end_date);
-    db.all('SELECT * FROM KMDW WHERE date BETWEEN ? AND ?', [start_date, end_date], (err, rows) => {
-        if(err){
-            res.status(500).type('txt').send('SQL Error');
-        }
-        else{
-            fs.readFile(path.join(template, 'season.html'), {encoding: 'utf8'}, (err, data) => {
-                let string = '';
-                let low = rows[0].actual_min_temp;
-                let high = rows[0].actual_max_temp;
-                let average_temp_total = Number(rows[0].actual_mean_temp);
-                let total_parcipitation = Number(rows[0].actual_precipitation);
-                for(let i = 1; i < rows.length; i++){
-                    if(rows[i].actual_min_temp < low){
-                        low = rows[i].actual_min_temp;
-                    }
-                    if(rows[i].actual_max_temp > high){
-                        high = rows[i].actual_max_temp;
-                    }
-                    average_temp_total += Number(rows[i].actual_mean_temp);
-                    total_parcipitation += Number(rows[i].actual_precipitation);
-                }
 
-                string += '<p>The low for the season: ' + low + '</p>';
-                string += '<p>The high for the season: ' + high + '</p>';
-                string += '<p>The average temperature for the season: ' + average_temp_total / rows.length + '</p>';
-                string += '<p>The average daily parcipitation for the season: ' + total_parcipitation / rows.length + '</p>';
-                string += '<p>The total parcipitation for the season: ' + total_parcipitation + '</p>';
+    if(req.params.season == 'spring' || req.params.season == 'summer' || req.params.season == 'fall' || req.params.season == 'winter'){
 
-                let response = data.replace('$$$SEASON$$$', req.params.season);
-                response = response.replace('$$$SEASON_DATA$$$', string);
-                res.status(200).type('html').send(response);
-            });
-        }
-    });
+        let [start_date, end_date] = returnSeason(req.params.season);
+        db.all('SELECT * FROM KMDW WHERE date BETWEEN ? AND ?', [start_date, end_date], (err, rows) => {
+            if(err){
+                res.status(500).type('txt').send('SQL Error');
+            }
+            else{
+                fs.readFile(path.join(template, 'season.html'), {encoding: 'utf8'}, (err, data) => {
+                    let string = '';
+                    let low = rows[0].actual_min_temp;
+                    let high = rows[0].actual_max_temp;
+                    let average_temp_total = Number(rows[0].actual_mean_temp);
+                    let total_parcipitation = Number(rows[0].actual_precipitation);
+                    for(let i = 1; i < rows.length; i++){
+                        if(rows[i].actual_min_temp < low){
+                            low = rows[i].actual_min_temp;
+                        }
+                        if(rows[i].actual_max_temp > high){
+                            high = rows[i].actual_max_temp;
+                        }
+                        average_temp_total += Number(rows[i].actual_mean_temp);
+                        total_parcipitation += Number(rows[i].actual_precipitation);
+                    }
+
+                    string += '<p>The low for the season: ' + low + '</p>';
+                    string += '<p>The high for the season: ' + high + '</p>';
+                    string += '<p>The average temperature for the season: ' + average_temp_total / rows.length + '</p>';
+                    string += '<p>The average daily parcipitation for the season: ' + total_parcipitation / rows.length + '</p>';
+                    string += '<p>The total parcipitation for the season: ' + total_parcipitation + '</p>';
+
+                    let response = data.replace('$$$SEASON$$$', req.params.season);
+                    response = response.replace('$$$SEASON_DATA$$$', string);
+                    
+                    let img = '';
+                    switch(req.params.season){
+                        case 'spring':
+                        img = '<img src="/pictures/Spring-pic.jpg" alt="Image of birds" width="360px" height="360px" class="float-center"/>';
+                        break;
+
+                        case 'summer':
+                        img = '<img src="/pictures/Summer-pic.png" alt="Image of the sun" width="360px" height="360px" class="float-center"/>';
+                        break;
+
+                        case 'fall':
+                        img = '<img src="/pictures/Fall-pic.jpg" alt="Image of a tree" width="360px" height="360px" class="float-center"/>';
+                        break;
+
+                        case 'winter':
+                        img = '<img src="/pictures/Winter-pic.jpg" alt="Image of a snowflake" width="360px" height="360px" class="float-center"/>';
+                        break;
+                    }
+
+                    response = response.replace('$$$IMG$$$', img);
+                    res.status(200).type('html').send(response);
+                });
+            }
+        });
+    }
+    else{
+        res.status(404).type('txt').send('Season ' + req.params.season + ' not found in database');
+    }
 });
 
 function returnSeason(season){
@@ -154,6 +187,7 @@ function returnSeason(season){
     if(season === 'winter'){
         return ['2014-12-1', '2015-2-28'];
     }
+
 }
 
 app.listen(port, () => {
