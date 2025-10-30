@@ -63,11 +63,15 @@ app.get('/day/:date', (req, res) => {
                 let response = data.replace('$$$DAY$$$', string);
                 response = response.replace('$$$DATE$$$', req.params.date);
                 
-                db.get('SELECT date FROM KMDW WHERE date < ? ORDER BY date DESC LIMIT 1', [req.params.date],(err,prevRow)=>{
-                    if(prevRow) prevDate = prevRow.date;
-                    db.get('SELECT date FROM KMDW WHERE date > ? ORDER BY date ASC LIMIT 1', [req.params.date], (err2,nextRow) =>{
-                        if (nextRow) nextDate = nextRow.date;
-
+                db.all('SELECT date FROM KMDW WHERE date < ?', [req.params.date],(err,prevRow)=>{
+                    if(prevRow) prevDate = prevRow[prevRow.length - 1].date;
+                    db.all('SELECT date FROM KMDW WHERE date > ?', [req.params.date], (err2,nextRow) =>{
+                        if(req.params.date === '2014-12-31'){
+                            nextDate = '2015-01-01';
+                        }
+                        else {
+                            nextDate = nextRow[0].date;
+                        }
                         response = response.replace('$$$PREV_DATE$$$', prevDate ?? '#');
                         response = response.replace('$$$NEXT_DATE$$$', nextDate ?? '#');
                         res.status(200).type('.html').send(response);
@@ -131,7 +135,7 @@ app.get('/month/:month', (req, res) => {
                 response = response.replace('$$$NEXT_DATE$$$', nextLink);
                 
                 res.status(200).type('html').send(response);
-            });       
+            });
         }
     });
 });
