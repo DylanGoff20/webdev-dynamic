@@ -33,3 +33,10 @@ Jack - 4:40PM:
     one of the three html files, and dynamically change the picture on the season page 
     for a picture of one of the 4 seasons. Also we have to send a propor 404 error when
     trying to access a page that doesnt exist.
+
+
+Mark
+    urls are a little strage
+     day url is /day/YYYY-MM-DD , eg /day/2015-2-2
+     month url is /day/YYYY-MM, eg /month/2015-2
+     season urs is /season/season, eg /season/fall
