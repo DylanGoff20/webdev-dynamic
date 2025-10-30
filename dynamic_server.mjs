@@ -33,7 +33,6 @@ app.get('/', (req, res) => {
         }
     });
 });
-
 app.get('/day/:date', (req, res) => {
     db.all('SELECT * FROM KMDW WHERE date = ?', [req.params.date], (err, row) => {
         if(err){
@@ -57,18 +56,33 @@ app.get('/day/:date', (req, res) => {
                 string += '<p>The actual parcipitation for the day: ' + row[0].actual_precipitation + '</p>';
                 string += '<p>The average parcipitation for this day: ' + row[0].average_precipitation + '</p>';
                 string += '<p>The record parcipitation for this day: ' + row[0].record_precipitation + '</p>';
+                
+                let prevDate = null;
+                let nextDate = null;
 
                 let response = data.replace('$$$DAY$$$', string);
                 response = response.replace('$$$DATE$$$', req.params.date);
-                res.status(200).type('html').send(response);
+                
+                db.get('SELECT date FROM KMDW WHERE date < ? ORDER BY date DESC LIMIT 1', [req.params.date],(err,prevRow)=>{
+                    if(prevRow) prevDate = prevRow.date;
+                    db.get('SELECT date FROM KMDW WHERE date > ? ORDER BY date ASC LIMIT 1', [req.params.date], (err2,nextRow) =>{
+                        if (nextRow) nextDate = nextRow.date;
+
+                        response = response.replace('$$$PREV_DATE$$$', prevDate ?? '#');
+                        response = response.replace('$$$NEXT_DATE$$$', nextDate ?? '#');
+                        res.status(200).type('.html').send(response);
+                    });
+                });
             });
         }
     });
 });
 
+
 app.get('/month/:month', (req, res) => {
     let start_date = req.params.month +  '-1';
     let end_date = req.params.month + '-31';
+
     db.all('SELECT * FROM KMDW WHERE date BETWEEN ? AND ?', [start_date, end_date], (err, rows) => {
         if(err){
             res.status(500).type('txt').send('SQL Error');
@@ -102,8 +116,22 @@ app.get('/month/:month', (req, res) => {
 
                 let response = data.replace('$$$MONTH$$$', req.params.month);
                 response = response.replace('$$$MONTH_DATA$$$', string);
+
+                let [year, month] = req.params.month.split('-').map(Number);
+            
+                let prevYear = month === 1 ? year - 1 : year;
+                let nextYear = month === 12 ? year + 1 : year;
+                let prevMonth = month === 1 ? 12 : month - 1;
+                let nextMonth = month === 12 ? 1 : month + 1;
+
+                let prevLink = `${prevYear}-${prevMonth}`;
+                let nextLink = `${nextYear}-${nextMonth}`;
+
+                response = response.replace('$$$PREV_DATE$$$', prevLink);
+                response = response.replace('$$$NEXT_DATE$$$', nextLink);
+                
                 res.status(200).type('html').send(response);
-            });
+            });       
         }
     });
 });
@@ -143,6 +171,22 @@ app.get('/season/:season', (req, res) => {
 
                     let response = data.replace('$$$SEASON$$$', req.params.season);
                     response = response.replace('$$$SEASON_DATA$$$', string);
+
+                    const seasons = ['spring', 'summer', 'fall', 'winter'];
+                    let index = seasons.indexOf(req.params.season.toLowerCase());
+
+                    let prevSeason = index > 0 ? seasons[index - 1] : null;
+                    let nextSeason = index < seasons.length - 1 ? seasons[index + 1] : null;
+
+                    
+                    if (!prevSeason) prevSeason = 'winter';  
+                    if (!nextSeason) nextSeason = 'spring';  
+
+                    
+                    response = response.replace('$$$PREV_DATE$$$', prevSeason);
+                    response = response.replace('$$$NEXT_DATE$$$', nextSeason);
+
+    
                     
                     let img = '';
                     switch(req.params.season){
