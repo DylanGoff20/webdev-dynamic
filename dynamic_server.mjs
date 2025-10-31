@@ -174,8 +174,9 @@ app.get('/month/:month', (req, res) => {
                         if(errNext){
                             res.status(500).type('txt').send('SQL Error');
                         }
-                        response = response.replace('$$$PREV_DATE$$$', prevLink);
-                        response = response.replace('$$$NEXT_DATE$$$', nextLink);
+                        
+                        response = response.replace('$$$PREV_DATE$$$', prevExists ? prevLink : '#');
+                        response = response.replace('$$$NEXT_DATE$$$', nextExists ? nextLink : '#');
 
 
                         const chartData = {
