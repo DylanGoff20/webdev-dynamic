@@ -108,7 +108,7 @@ app.get('/day/:date', (req, res) => {
                         response = response.replace('$$$CHART_DATA$$$', JSON.stringify(chartData));
                         
                         
-                        res.status(200).type('.html').send(response);
+                        res.status(200).type('html').send(response);
                     });
                 });
             });
@@ -118,7 +118,7 @@ app.get('/day/:date', (req, res) => {
 
 
 app.get('/month/:month', (req, res) => {
-    let start_date = req.params.month +  '-1';
+    let start_date = req.params.month +  '-01';
     let end_date = req.params.month + '-31';
 
     db.all('SELECT * FROM KMDW WHERE date BETWEEN ? AND ?', [start_date, end_date], (err, rows) => {
@@ -161,26 +161,39 @@ app.get('/month/:month', (req, res) => {
                 let nextYear = month === 12 ? year + 1 : year;
                 let prevMonth = month === 1 ? 12 : month - 1;
                 let nextMonth = month === 12 ? 1 : month + 1;
-
-                let prevLink = `${prevYear}-${prevMonth}`;
-                let nextLink = `${nextYear}-${nextMonth}`;
-
-                response = response.replace('$$$PREV_DATE$$$', prevLink);
-                response = response.replace('$$$NEXT_DATE$$$', nextLink);
-
-
-                const chartData = {
-                    labels: ['Low', 'High', 'Average Temp', 'Total Precipitation', 'Avg Daily Precipitation'],
-                    values: [low, high, average_temp_total / rows.length, total_parcipitation, total_parcipitation / rows.length]
-                };
                 
-                response = response.replace('$$$CHART_DATA$$$', JSON.stringify(chartData));
+                let pad = (n) => String(n).padStart(2, '0');
+                let prevLink = `${prevYear}-${pad(prevMonth)}`;
+                let nextLink = `${nextYear}-${pad(nextMonth)}`;
+
+                db.get('SELECT 1 FROM KMDW WHERE date LIKE ? LIMIT 1', [prevLink + '%'], (errPrev, prevExists) => {
+                    if(errPrev){
+                        res.status(500).type('txt').send('SQL Error');
+                    }
+                    db.get('SELECT 1 FROM KMDW WHERE date LIKE ? LIMIT 1', [nextLink + '%'],(errNext, nextExists) =>{
+                        if(errNext){
+                            res.status(500).type('txt').send('SQL Error');
+                        }
+                        response = response.replace('$$$PREV_DATE$$$', prevLink);
+                        response = response.replace('$$$NEXT_DATE$$$', nextLink);
+
+
+                        const chartData = {
+                            labels: ['Low', 'High', 'Average Temp', 'Total Precipitation', 'Avg Daily Precipitation'],
+                            values: [low, high, average_temp_total / rows.length, total_parcipitation, total_parcipitation / rows.length]
+                        };
+                
+                        response = response.replace('$$$CHART_DATA$$$', JSON.stringify(chartData));
                 
 
                 
-                res.status(200).type('html').send(response);
+                        res.status(200).type('html').send(response);
+
+
+                    })
+                })
             });
-        }
+        };
     });
 });
 
@@ -282,16 +295,16 @@ app.get('/season/:season', (req, res) => {
 
 function returnSeason(season){
     if(season === 'spring'){
-        return ['2015-3-1', '2015-6-30'];
+        return ['2015-03-01', '2015-06-30'];
     }
     if(season === 'summer'){
-        return ['2014-7-1', '2014-8-31'];
+        return ['2014-07-01', '2014-08-31'];
     }
     if(season === 'fall'){
-        return ['2014-9-1', '2015-11-30'];
+        return ['2014-09-01', '2015-11-30'];
     }
     if(season === 'winter'){
-        return ['2014-12-1', '2015-2-28'];
+        return ['2014-12-01', '2015-02-28'];
     }
 
 }
